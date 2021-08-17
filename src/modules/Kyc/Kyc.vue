@@ -33,7 +33,6 @@
 import DocumentUpload from "./DocumentUpload.vue";
 import UplaodPicture from "./UploadPicture.vue";
 import Verification from "./Verification.vue";
-import httpClient from '../../shared/services/httpClient';
 export default {
   name: "KYC",
   data() {
@@ -52,9 +51,6 @@ export default {
     },
   },
   created() {
-    httpClient.get('http://demo0415326.mockable.io/getDynamicMapping/list').then(res => {
-      console.log(res);
-    });
   }
 };
 </script>

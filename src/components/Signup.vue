@@ -84,7 +84,7 @@ export default {
       this.$router.push("/login");
     },
     signup() {
-      this.$router.push("/home");
+      this.$router.push("/home/kycs");
     },
   },
 };
