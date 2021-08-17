@@ -18,7 +18,7 @@
                 style="padding-top: 7px"
               >
                 <img :src="subMenu.image" alt="Profile" />
-                <a class="ml-3 pointer menu-text">
+                <a class="ml-3 pointer menu-text" v-on:click="navigate(subMenu.url)">
                   {{ subMenu.title }}
                 </a>
               </li>
@@ -66,13 +66,18 @@ export default {
               id: 2,
               title: "KYC",
               children: [],
-              url: "/kyc",
+              url: "/kycs",
               image: require('@/assets/people.png'),
             },
           ],
         }
       ],
     };
+  },
+  methods: {
+    navigate: function(url) {
+      this.$router.push(`/home${url}`);
+    }
   }
 };
 </script>

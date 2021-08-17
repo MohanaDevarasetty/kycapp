@@ -27,7 +27,7 @@
           </div>
           <div class="">
             <div>
-              <button class="btn btn-primary">
+              <button class="btn btn-primary" v-on:click="add">
                 {{ buttonName }}
               </button>
             </div>
@@ -51,6 +51,7 @@
           <button style="height: fit-content" class="btn btn-primary">Export Data</button>
         </div>
       </div>
+      <Table />
     </div>
   </section>
 </template>
@@ -59,8 +60,13 @@
 
 <script>
 
+import Table from '../components/Table.vue';
+
 export default({
     name: "summaryView",
+    components: {
+      Table
+    },
     data() {
         return {
             header: '',
@@ -69,6 +75,11 @@ export default({
             title: '',
 
         }
+    },
+    methods: {
+      add: function() {
+        // Implement in child component
+      }
     }
 })
 </script>
