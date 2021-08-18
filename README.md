@@ -7,7 +7,7 @@ This project was generated with [Node](https://nodejs.org/download/release/v10.1
 ```
 npm install -g @vue/cli
 ```
-#OR
+### OR
 ```
 yarn global add @vue/cli
 ```
@@ -25,7 +25,7 @@ npm install
 ```
 npm run serve
 ```
-# OR
+### OR
 
 ```
 npm run serve -- --port 4200
