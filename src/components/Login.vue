@@ -68,7 +68,7 @@ export default {
   },
   methods: {
     login() {
-      this.$router.push("/home/kycs");
+      // this.$router.push("/home/kycs");
     },
     signUpRoute() {
       this.$router.push("/signup");
