@@ -26,21 +26,24 @@
                     notificationCount > 0 ? notificationCount : ""
                   }}</span>
                 </a>
-                 <div v-if="openNotificationNav" class="dropdown-menu dropdown-notification"
-                  :class="openNotificationNav ? 'show' : ''">
-                    <PushNotifications />
+                <div
+                  v-if="openNotificationNav"
+                  class="dropdown-menu dropdown-notification"
+                  :class="openNotificationNav ? 'show' : ''"
+                >
+                  <PushNotifications />
                 </div>
               </div>
               <div class="settings" style="cursor: pointer">
                 <img src="~@/assets/settings.png" alt="" />
               </div>
-              <div class="language" style="cursor: pointer;">
-                        <a>
-                            <img src="~@/assets/oval.png" alt="">
-                        </a>
-                    </div>
+              <div class="language" style="cursor: pointer">
+                <a>
+                  <img src="~@/assets/oval.png" alt="" />
+                </a>
+              </div>
               <div class="profile">
-                <a  class="pointer" v-on:click="profileDropMenu">
+                <a class="pointer" v-on:click="profileDropMenu">
                   <div
                     class="row"
                     style="align-items: center; margin-left: 0px"
@@ -54,13 +57,17 @@
                     </div>
                     <div class="col-9">
                       <h6 class="user_name">
-                        {{ "Nagaraju Devarasetty" }}
+                        {{ getUserName }}
                       </h6>
                     </div>
                   </div>
                 </a>
-                <ul v-if="openProfile" class="dropdown-menu" id="profile-submenu"
-                :class="openProfile ? 'show' : ''">
+                <ul
+                  v-if="openProfile"
+                  class="dropdown-menu"
+                  id="profile-submenu"
+                  :class="openProfile ? 'show' : ''"
+                >
                   <li class="dropdown-item pointer">
                     <a>Change Password</a>
                   </li>
@@ -83,12 +90,12 @@
 
 <script>
 import Aside from "./Aside.vue";
-import PushNotifications from './PushNotifications.vue'
+import PushNotifications from "./PushNotifications.vue";
 export default {
   name: "Header",
   components: {
     Aside,
-    PushNotifications
+    PushNotifications,
   },
   data() {
     return {
@@ -96,28 +103,34 @@ export default {
       openLeftNavigator: true,
       openNotificationNav: false,
       notificationCount: 0,
+      userName: "",
     };
+  },
+  computed: {
+    getUserName() {
+      return this.$store.getters.userName;
+    }
   },
   methods: {
     leftNavigator: function () {
       this.openLeftNavigator = !this.openLeftNavigator;
       this.$emit("updateLeftNavigation", this.openLeftNavigator);
     },
-    signOut: function() {
+    signOut: function () {
       this.$router.push("/login");
     },
-    closeDropDowns: function() {
+    closeDropDowns: function () {
       this.openProfile = false;
       this.openNotificationNav = false;
     },
-    notificationDropMenu: function() {
+    notificationDropMenu: function () {
       this.openNotificationNav = !this.openNotificationNav;
       this.openProfile = false;
     },
-    profileDropMenu: function() {
+    profileDropMenu: function () {
       this.openProfile = !this.openProfile;
       this.openNotificationNav = false;
-    }
+    },
   },
 };
 </script>
@@ -278,7 +291,6 @@ aside .padding {
   z-index: 1;
 }
 
-
 .dropdown-item {
   border-bottom: 1px solid lightgrey;
   padding: 8px !important;
@@ -287,7 +299,6 @@ aside .padding {
   text-align: center;
   font-size: 14px;
 }
-
 
 .dropdown-menu .dropdown-item a:hover {
   color: #05410d;
