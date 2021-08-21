@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header @updateLeftNavigation="updateLeftNavigation"/>
+    <Header @updateLeftNavigation="updateLeftNavigation" />
     <main
       :class="isLeftNavigatorOpen ? 'main-section-padding' : ''"
       class="main-section"
@@ -27,13 +27,23 @@ export default {
   data() {
     return {
       isLeftNavigatorOpen: true,
+      isSession: this.checkSession(),
     };
   },
+
   methods: {
-    updateLeftNavigation: function(value) {
+    updateLeftNavigation: function (value) {
       this.isLeftNavigatorOpen = value;
-    }
-  }
+    },
+    checkSession() {
+      const isLoggedIn = sessionStorage.getItem("isLoggedIn")
+        ? JSON.parse(sessionStorage.getItem("isLoggedIn"))
+        : false;
+      if (isLoggedIn === true) {
+        this.$store.dispatch("authTokenSuccess", "asdfasdfasdf");
+      }
+    },
+  },
 };
 </script>
 

@@ -68,7 +68,15 @@ export default {
   },
   methods: {
     login() {
+      const details = {
+        username: "asdf"
+      };
       // this.$router.push("/home/kycs");
+      this.$store.dispatch('authLogin',details).then(res => {
+        console.log('asdfasdf',this.$store.getters.tokenResponse);
+        console.log(res);
+        // this.$store.dispatch('')
+      })
     },
     signUpRoute() {
       this.$router.push("/signup");

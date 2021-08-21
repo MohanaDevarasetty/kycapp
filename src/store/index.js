@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import { login, getUserDetails } from '../shared/services/authService'
+import httpClient from '../shared/services/httpClient';
+import {vm} from '../main';
 
 Vue.use(Vuex)
 
@@ -67,65 +68,56 @@ export default new Vuex.Store({
   },
   mutations: {
     updateLogin(state, payload) {
-      return {
-        ...state,
-        loading: payload
-      }
+      state.loading = payload;
     },
     updateTokenResponse(state, payload) {
-      return {
-        ...state,
-        loading: true,
-        loggedIn: false,
-        tokenResponse: payload
-      }
+      state.loading = true;
+      state.tokenResponse = payload;
     },
     updateUserResponse(state, payload) {
-      return {
-        ...state,
-        loading: true,
-        loggedIn: true,
-        userResponse: payload
-      }
+      state.loading = true;
+      state.loggedIn = true;
+      state.userResponse = payload;
     }
   },
   actions: {
-    authLogin(payload) {
-      return new Promise(() => {
-        login(payload).then(res => {
+    authLogin: ({commit, dispatch},payload) => {
+      return new Promise((resovle, reject) => {
+        httpClient.post('http://demo0415326.mockable.io/checkmock', payload).then((res) => {
           sessionStorage.setItem(btoa('_farmerEnterprise'), 'true');
-          if (res && res['userId'] && res['accessToken']) {
-            this.commit(this.updateLogin, true);
-            this.commit(this.updateTokenResponse, res).then(() => {
-              this.dispatch('authTokenSuccess', res);
-            });
+          sessionStorage.setItem('isLoggedIn', true);
+          if (res && res.data && res.data['userId'] && res.data['accessToken']) {
+            commit('updateLogin', true);
+            commit('updateTokenResponse', res.data);
+            dispatch('authTokenSuccess', res.data.accessToken);
+            resovle(res.data);
           }
-        })
-          .catch(error => {
-            console.log(error);
-          });
-      });
-    },
-    authTokenSuccess(context) {
-      if (context.state.tokenResponse.accessToken) {
-        return new Promise(() => {
-          getUserDetails().then(res => {
-            this.dispatch('authLoginSuccess', res);
+        },
+          (err) => {
+            console.log(err);
+            reject(err);
           })
-        })
-      }
+      })
     },
-    authLoginSuccess(context, payload) {
-      if (context.state.tokenResponse.accessToken && payload) {
-        this.commit('updateUserResponse', payload).then(() => {
-          this.$router.push("/home/kycs");
-        });
+    authTokenSuccess: ({dispatch},token) => {
+      return httpClient.get(`http://demo0415326.mockable.io/getfileConnections`).then(res => {
+        if (res && res.data) {
+          console.log(token)
+          dispatch('authLoginSuccess', res.data)
+        }
+      })
+    },
+    authLoginSuccess:({commit}, payload) => {
+      if (payload) {
+        commit('updateUserResponse', payload)
+        vm.$router.push("/home/kycs");
       }
     }
   },
   modules: {
   },
   getters: {
-
+    tokenResponse: state => state.tokenResponse,
+    userName: state => state.userResponse.principal.userName
   }
 })
