@@ -117,7 +117,7 @@ export default {
       this.$emit("updateLeftNavigation", this.openLeftNavigator);
     },
     signOut: function () {
-      this.$router.push("/login");
+      this.$store.dispatch('authLogout');
     },
     closeDropDowns: function () {
       this.openProfile = false;
