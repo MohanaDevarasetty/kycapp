@@ -2,70 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import httpClient from '../shared/services/httpClient';
+import initialstate from './initialState';
 import {vm} from '../main';
 
 Vue.use(Vuex)
 
+
 export default new Vuex.Store({
-  state: {
-    loading: false,
-    logoutPopUpActive: false,
-    loginFailed: false,
-    loggedIn: false,
-    loadedPrivileges: false,
-    tokenResponse: {
-      userId: '',
-      accessToken: '',
-      tokenType: '',
-      refreshToken: '',
-      expiresIn: 0,
-      scope: ''
-    },
-    userResponse: {
-      authorities: [],
-      details: {
-        remoteAddress: '',
-        sessionId: '',
-        tokenValue: '',
-        tokenType: '',
-        decodedDetails: ''
-      },
-      authenticated: false,
-      userAuthentication: {
-        authorities: [],
-        details: {
-          grant_type: '',
-          username: ''
-        },
-        authenticated: false,
-        principal: {},
-        credentials: '',
-        name: ''
-      },
-      principal: {},
-      credentials: '',
-      oauth2Request: {
-        clientId: '',
-        scope: [],
-        requestParameters: {
-          grant_type: '',
-          username: ''
-        },
-        resourceIds: [],
-        authorities: [],
-        approved: false,
-        refresh: false,
-        redirectUri: '',
-        responseTypes: [],
-        extensions: {},
-        refreshTokenRequest: '',
-        grantType: ''
-      },
-      clientOnly: false,
-      name: ''
-    },
-    mfaUserId: 0
-  },
+  state: initialstate(),
   mutations: {
     updateLogin(state, payload) {
       state.loading = payload;
@@ -75,9 +19,12 @@ export default new Vuex.Store({
       state.tokenResponse = payload;
     },
     updateUserResponse(state, payload) {
-      state.loading = true;
+      state.loading = false;
       state.loggedIn = true;
       state.userResponse = payload;
+    },
+    resetState(state) {
+      Object.assign(state, initialstate());
     }
   },
   actions: {
@@ -112,12 +59,19 @@ export default new Vuex.Store({
         commit('updateUserResponse', payload)
         vm.$router.push("/home/kycs");
       }
+    },
+    authLogout: ({commit}) => {
+      sessionStorage.clear();
+      localStorage.clear();
+      commit('resetState');
+      vm.$router.push("/login");
     }
   },
   modules: {
   },
   getters: {
     tokenResponse: state => state.tokenResponse,
-    userName: state => state.userResponse.principal.userName
+    userName: state => state.userResponse.principal.userName,
+    isLoading: state => state.loading
   }
 })

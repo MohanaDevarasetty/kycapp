@@ -1,13 +1,18 @@
 <template>
   <div id="app">
     <router-view />
+    <SpinnerWheel />
   </div>
 </template>
 
 <script>
+import SpinnerWheel from './shared/components/SpinnerWheel.vue';
 
 export default {
   name: 'App',
+  components: {
+    SpinnerWheel
+  }
 }
 </script>
 
